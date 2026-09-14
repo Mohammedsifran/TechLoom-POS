@@ -87,9 +87,6 @@ function App() {
           <Link to="/" style={{ textDecoration: 'none' }}>
             <h1 style={{ marginBottom: 0 }}>TechLoom POS</h1>
           </Link>
-          <Link to="/cart" className="btn btn-primary" style={{ width: 'auto' }}>
-            Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})
-          </Link>
         </header>
 
         <Routes>
