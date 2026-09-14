@@ -7,6 +7,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Simple health check route for Vercel
+app.get('/', (req, res) => {
+  res.send('TechLoom POS Backend is running successfully!');
+});
+
 // 1. Product & Inventory Management
 app.get('/api/products', async (req, res) => {
   try {
