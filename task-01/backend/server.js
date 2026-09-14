@@ -106,7 +106,7 @@ app.post('/api/checkout', async (req, res) => {
 
     // Create the order with 'Reserved' status
     const [orderResult] = await connection.query(
-      'INSERT INTO orders (total_amount, status) VALUES (?, "Reserved")',
+      'INSERT INTO orders (total_amount, status) VALUES (?, \'Reserved\')',
       [total_amount]
     );
 
