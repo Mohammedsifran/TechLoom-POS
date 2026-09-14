@@ -185,13 +185,17 @@ function StorePage({ products, addToCart, search, setSearch, category, setCatego
 
       <div className="products-grid">
         {products.length === 0 ? <p>No products found.</p> : products.map(product => (
-          <div key={product.id} className="product-card glass-card">
-            <div className="product-header">
-              <span className="product-category">{product.category}</span>
-              {product.stock <= 3 && product.stock > 0 && <span className="badge warning">Low Stock</span>}
-              {product.stock === 0 && <span className="badge danger">Out of Stock</span>}
+          <div key={product.id} className="product-card glass-card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ height: '200px', width: '100%', overflow: 'hidden', backgroundColor: '#f1f1f1' }}>
+              <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <h3 className="product-name">{product.name}</h3>
+            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <div className="product-header">
+                <span className="product-category">{product.category}</span>
+                {product.stock <= 3 && product.stock > 0 && <span className="badge warning">Low Stock</span>}
+                {product.stock === 0 && <span className="badge danger">Out of Stock</span>}
+              </div>
+              <h3 className="product-name">{product.name}</h3>
             <div className="product-price">LKR {Number(product.price).toLocaleString()}</div>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
               {product.stock} items available
@@ -213,16 +217,21 @@ function StorePage({ products, addToCart, search, setSearch, category, setCatego
                 {product.stock === 0 ? 'Sold Out' : 'Add to Cart'}
               </button>
             </div>
-          </div>
+            </div>
+            </div>
         ))}
       </div>
 
       {selectedProduct && (
         <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>
-          <div className="modal-content glass-card" onClick={e => e.stopPropagation()}>
-            <span className="product-category" style={{ display: 'inline-block', padding: '0.2rem 0.5rem', background: 'var(--bg-primary)', borderRadius: '4px', fontSize: '0.8rem', marginBottom: '1rem', color: 'var(--text-secondary)' }}>
-              {selectedProduct.category}
-            </span>
+          <div className="modal-content glass-card" onClick={e => e.stopPropagation()} style={{ padding: '0', overflow: 'hidden' }}>
+            <div style={{ height: '300px', width: '100%', backgroundColor: '#f1f1f1' }}>
+              <img src={selectedProduct.image_url} alt={selectedProduct.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <div style={{ padding: '2rem' }}>
+              <span className="product-category" style={{ display: 'inline-block', padding: '0.2rem 0.5rem', background: 'var(--bg-primary)', borderRadius: '4px', fontSize: '0.8rem', marginBottom: '1rem', color: 'var(--text-secondary)' }}>
+                {selectedProduct.category}
+              </span>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{selectedProduct.name}</h2>
             <div className="product-price" style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>
               LKR {Number(selectedProduct.price).toLocaleString()}
@@ -247,6 +256,7 @@ function StorePage({ products, addToCart, search, setSearch, category, setCatego
               >
                 {selectedProduct.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
               </button>
+            </div>
             </div>
           </div>
         </div>

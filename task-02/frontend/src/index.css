@@ -1,19 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --bg-primary: #f4f6f8;
+  --bg-primary: #f8f9fa;
   --bg-secondary: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --accent-primary: #0ea5e9; /* Light Ocean Blue */
-  --accent-hover: #0284c7;
-  --accent-success: #10b981;
-  --accent-danger: #ef4444;
+  --text-primary: #0f1111;
+  --text-secondary: #565959;
+  --accent-primary: #ff9900; /* Amazon Orange */
+  --accent-hover: #e38800;
+  --accent-success: #067d62;
+  --accent-danger: #b12704;
+  --nav-bg: #232f3e; /* Amazon Dark Navy */
+  --nav-text: #ffffff;
   --glass-bg: rgba(255, 255, 255, 1);
   --glass-border: rgba(0, 0, 0, 0.08);
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 15px rgba(14, 165, 233, 0.2);
+  --shadow-glow: 0 0 15px rgba(255, 153, 0, 0.2);
 }
 
 * {
@@ -317,7 +319,7 @@ h1 {
 
 /* E-Commerce Specific Styles */
 .navbar {
-  background: var(--bg-secondary);
+  background: var(--nav-bg);
   border-bottom: 1px solid var(--glass-border);
   padding: 1rem 0;
   position: sticky;
@@ -336,7 +338,7 @@ h1 {
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--accent-primary);
+  color: var(--nav-text);
   margin: 0;
 }
 .nav-links {
@@ -346,7 +348,7 @@ h1 {
 }
 .nav-links a {
   text-decoration: none;
-  color: var(--text-secondary);
+  color: var(--nav-text);
   font-weight: 500;
   transition: color 0.2s;
 }
