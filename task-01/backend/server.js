@@ -257,7 +257,11 @@ app.post('/api/orders/:id/cancel', async (req, res) => {
 });
 
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`POS Backend running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`POS Backend running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
