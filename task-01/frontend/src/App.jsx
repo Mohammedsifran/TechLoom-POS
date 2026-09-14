@@ -94,7 +94,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={
-            <ProductsPage products={products} addToCart={addToCart} fetchProducts={fetchProducts} />
+            <ProductsPage products={products} cart={cart} addToCart={addToCart} updateQuantity={updateQuantity} fetchProducts={fetchProducts} />
           } />
           <Route path="/cart" element={
             <CartPage cart={cart} updateQuantity={updateQuantity} />
@@ -111,39 +111,84 @@ function App() {
   );
 }
 
-// 1. Products Page
-function ProductsPage({ products, addToCart, fetchProducts }) {
+// 1. Products Page (Now includes Cart side-by-side)
+function ProductsPage({ products, cart, addToCart, updateQuantity, fetchProducts }) {
+  const navigate = useNavigate();
+  
   useEffect(() => {
     fetchProducts();
     // eslint-disable-next-line
   }, []);
 
+  const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
   return (
-    <div>
-      <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.75rem' }}>
-        Available Items
-      </h2>
-      <div className="products-grid">
-        {products.map(product => (
-          <div key={product.id} className="glass-card product-card">
-            <div>
-              <div className="product-header">
-                <h3 className="product-title">{product.name}</h3>
-                <div className="product-price">LKR {parseFloat(product.price).toFixed(2)}</div>
+    <div className="layout-grid">
+      {/* Left Side: Products */}
+      <div>
+        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.75rem' }}>
+          Available Items
+        </h2>
+        <div className="products-grid">
+          {products.map(product => (
+            <div key={product.id} className="glass-card product-card">
+              <div>
+                <div className="product-header">
+                  <h3 className="product-title">{product.name}</h3>
+                  <div className="product-price">LKR {parseFloat(product.price).toFixed(2)}</div>
+                </div>
+                <div className={`product-stock ${product.stock < 5 ? 'low' : ''}`}>
+                  {product.stock > 0 ? `${product.stock} available` : 'Finished'}
+                </div>
               </div>
-              <div className={`product-stock ${product.stock < 5 ? 'low' : ''}`}>
-                {product.stock > 0 ? `${product.stock} available` : 'Finished'}
-              </div>
+              <button 
+                className="btn btn-primary"
+                onClick={() => addToCart(product)}
+                disabled={product.stock <= 0}
+              >
+                Add Item
+              </button>
             </div>
-            <button 
-              className="btn btn-primary"
-              onClick={() => addToCart(product)}
-              disabled={product.stock <= 0}
-            >
-              Add Item
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+
+      {/* Right Side: Cart */}
+      <div className="cart-section">
+        <div className="glass-card">
+          <h2 className="cart-title">Your Bill</h2>
+          
+          {cart.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+              <p style={{ color: 'var(--text-secondary)' }}>No items added yet.</p>
+            </div>
+          ) : (
+            <>
+              {cart.map(item => (
+                <div key={item.product_id} className="cart-item">
+                  <div className="cart-item-info">
+                    <h4>{item.name}</h4>
+                    <div className="cart-item-price">LKR {parseFloat(item.price).toFixed(2)}</div>
+                  </div>
+                  <div className="cart-item-actions">
+                    <button className="qty-btn" onClick={() => updateQuantity(item.product_id, -1)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button className="qty-btn" onClick={() => updateQuantity(item.product_id, 1)}>+</button>
+                  </div>
+                </div>
+              ))}
+              
+              <div className="cart-total">
+                <span>Total</span>
+                <span>LKR {cartTotal.toFixed(2)}</span>
+              </div>
+              
+              <button className="btn btn-primary" onClick={() => navigate('/payment')}>
+                Proceed to Checkout
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
