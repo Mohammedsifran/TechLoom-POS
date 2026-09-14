@@ -300,23 +300,6 @@ function PaymentPage({ cart, clearCart, fetchProducts, showNotification }) {
         </div>
       </div>
 
-      <div className="payment-card-visual">
-        <div className="chip"></div>
-        <div className="card-number-display">
-          {cardNumber || '•••• •••• •••• ••••'}
-        </div>
-        <div className="card-details-display">
-          <div>
-            <div>Card Holder</div>
-            <div style={{ color: 'white', marginTop: '4px' }}>{name || 'YOUR NAME'}</div>
-          </div>
-          <div>
-            <div>Expires</div>
-            <div style={{ color: 'white', marginTop: '4px' }}>{expiry || 'MM/YY'}</div>
-          </div>
-        </div>
-      </div>
-
       <form className="payment-form" onSubmit={handlePay}>
         <div className="form-group">
           <label>Card Number (16 Digits)</label>
