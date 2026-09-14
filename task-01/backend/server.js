@@ -18,14 +18,14 @@ async function cleanupExpiredOrders() {
   await connection.beginTransaction();
   try {
     const [expiredOrders] = await connection.query(
-      'SELECT id FROM orders WHERE status = "Reserved" AND created_at < NOW() - INTERVAL 5 MINUTE FOR UPDATE'
+      'SELECT id FROM orders WHERE status = \'Reserved\' AND created_at < NOW() - INTERVAL 5 MINUTE FOR UPDATE'
     );
     for (const row of expiredOrders) {
       const [items] = await connection.query('SELECT product_id, quantity FROM order_items WHERE order_id = ?', [row.id]);
       for (const item of items) {
         await connection.query('UPDATE products SET stock = stock + ? WHERE id = ?', [item.quantity, item.product_id]);
       }
-      await connection.query('UPDATE orders SET status = "Expired" WHERE id = ?', [row.id]);
+      await connection.query('UPDATE orders SET status = \'Expired\' WHERE id = ?', [row.id]);
     }
     await connection.commit();
   } catch (err) {
@@ -203,7 +203,7 @@ app.post('/api/payments', async (req, res) => {
             for (const item of items) {
               await connection.query('UPDATE products SET stock = stock + ? WHERE id = ?', [item.quantity, item.product_id]);
             }
-            await connection.query('UPDATE orders SET status = "Failed" WHERE id = ?', [order_id]);
+            await connection.query('UPDATE orders SET status = \'Failed\' WHERE id = ?', [order_id]);
             await connection.commit();
             return res.status(429).json({ 
               success: false, 
@@ -213,7 +213,7 @@ app.post('/api/payments', async (req, res) => {
         }
       }
 
-      await connection.query('UPDATE orders SET status = "Paid", card_number = ? WHERE id = ?', [card_number || null, order_id]);
+      await connection.query('UPDATE orders SET status = \'Paid\', card_number = ? WHERE id = ?', [card_number || null, order_id]);
       await connection.commit();
       return res.json({ success: true, message: 'Payment successful, order confirmed.' });
     } 
