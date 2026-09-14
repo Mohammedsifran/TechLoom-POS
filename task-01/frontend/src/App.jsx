@@ -6,7 +6,7 @@ import './payment.css';
 
 const API_BASE = import.meta.env.DEV 
   ? 'http://localhost:3001/api' 
-  : 'https://tech-loom-pos-git-main-sfran.vercel.app/api';
+  : 'https://tech-loom-pos.vercel.app/api';
 
 // Toast Notification Component
 const Toast = ({ message, type }) => (
