@@ -7,7 +7,7 @@ const pool = mysql.createPool({
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'techloom_pos',
-  ssl: process.env.DB_HOST ? { rejectUnauthorized: false } : undefined, // Enable SSL for cloud DBs
+  ssl: (process.env.DB_HOST && process.env.DB_HOST !== 'localhost') ? { rejectUnauthorized: false } : undefined,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
