@@ -12,8 +12,32 @@ app.get('/', (req, res) => {
   res.send('TechLoom POS Backend is running successfully!');
 });
 
+// Helper function to expire 5-minute reservations (since cron doesn't run on Vercel serverless)
+async function cleanupExpiredOrders() {
+  const connection = await pool.getConnection();
+  await connection.beginTransaction();
+  try {
+    const [expiredOrders] = await connection.query(
+      'SELECT id FROM orders WHERE status = "Reserved" AND created_at < NOW() - INTERVAL 5 MINUTE FOR UPDATE'
+    );
+    for (const row of expiredOrders) {
+      const [items] = await connection.query('SELECT product_id, quantity FROM order_items WHERE order_id = ?', [row.id]);
+      for (const item of items) {
+        await connection.query('UPDATE products SET stock = stock + ? WHERE id = ?', [item.quantity, item.product_id]);
+      }
+      await connection.query('UPDATE orders SET status = "Expired" WHERE id = ?', [row.id]);
+    }
+    await connection.commit();
+  } catch (err) {
+    await connection.rollback();
+  } finally {
+    connection.release();
+  }
+}
+
 // 1. Product & Inventory Management
 app.get('/api/products', async (req, res) => {
+  await cleanupExpiredOrders();
   try {
     const [rows] = await pool.query('SELECT * FROM products');
     res.json(rows);

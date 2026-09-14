@@ -300,64 +300,53 @@ function PaymentPage({ cart, clearCart, fetchProducts, showNotification }) {
         </div>
       </div>
 
-      <form className="payment-form" onSubmit={handlePay}>
-        <div className="form-group">
-          <label>Card Number (Must be 16 digits for success)</label>
-          <input 
-            type="text" 
-            className="form-input" 
-            placeholder="0000 0000 0000 0000"
-            value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        
-        <div className="form-group">
-          <label>Cardholder Name</label>
-          <input 
-            type="text" 
-            className="form-input" 
-            placeholder="John Doe"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label>Expiry Date</label>
-            <input 
-              type="text" 
-              className="form-input" 
-              placeholder="MM/YY"
-              value={expiry}
-              onChange={(e) => setExpiry(e.target.value)}
-              required
-              disabled={loading}
-            />
-          </div>
-          <div className="form-group">
-            <label>CVV</label>
-            <input 
-              type="password" 
-              className="form-input" 
-              placeholder="123"
-              value={cvv}
-              onChange={(e) => setCvv(e.target.value)}
-              required
-              disabled={loading}
-            />
-          </div>
-        </div>
-
-        <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }} disabled={loading}>
-          {loading ? <div className="loader"></div> : 'Pay Now'}
+      <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <button 
+          className="btn btn-primary" 
+          onClick={() => processPayment('success', '1234123412341234')} 
+          disabled={loading}
+          style={{ background: '#10b981', borderColor: '#10b981' }}
+        >
+          {loading ? <div className="loader"></div> : '✅ Simulate Success'}
         </button>
-      </form>
+
+        <button 
+          className="btn btn-primary" 
+          onClick={() => processPayment('failure', '0000000000000000')} 
+          disabled={loading}
+          style={{ background: '#ef4444', borderColor: '#ef4444' }}
+        >
+          {loading ? <div className="loader"></div> : '❌ Simulate Failure'}
+        </button>
+
+        <button 
+          className="btn btn-primary" 
+          onClick={() => processPayment('timeout')} 
+          disabled={loading}
+          style={{ background: '#f59e0b', borderColor: '#f59e0b' }}
+        >
+          {loading ? <div className="loader"></div> : '⏳ Simulate Timeout'}
+        </button>
+
+        <button 
+          className="btn" 
+          onClick={async () => {
+            setLoading(true);
+            try {
+              await axios.post(`${API_BASE}/orders/${orderId}/cancel`);
+              fetchProducts();
+              navigate('/result', { state: { success: false, message: 'Order Cancelled. Stock Restored.', outcome: 'cancelled' } });
+            } catch (err) {
+              showNotification(err.response?.data?.error || 'Error cancelling order', 'error');
+              setLoading(false);
+            }
+          }} 
+          disabled={loading}
+          style={{ background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}
+        >
+          Cancel Order & Release Stock
+        </button>
+      </div>
     </div>
   );
 }
