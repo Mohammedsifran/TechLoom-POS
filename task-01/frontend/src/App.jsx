@@ -307,7 +307,7 @@ function PaymentPage({ cart, clearCart, fetchProducts, showNotification }) {
           disabled={loading}
           style={{ background: '#10b981', borderColor: '#10b981' }}
         >
-          {loading ? <div className="loader"></div> : '✅ Simulate Success'}
+          {loading ? <div className="loader"></div> : '✅ Confirm Payment (Success)'}
         </button>
 
         <button 
@@ -316,7 +316,7 @@ function PaymentPage({ cart, clearCart, fetchProducts, showNotification }) {
           disabled={loading}
           style={{ background: '#ef4444', borderColor: '#ef4444' }}
         >
-          {loading ? <div className="loader"></div> : '❌ Simulate Failure'}
+          {loading ? <div className="loader"></div> : '❌ Decline Payment (Failure)'}
         </button>
 
         <button 
@@ -325,7 +325,7 @@ function PaymentPage({ cart, clearCart, fetchProducts, showNotification }) {
           disabled={loading}
           style={{ background: '#f59e0b', borderColor: '#f59e0b' }}
         >
-          {loading ? <div className="loader"></div> : '⏳ Simulate Timeout'}
+          {loading ? <div className="loader"></div> : '⏳ Connection Timeout'}
         </button>
 
         <button 
