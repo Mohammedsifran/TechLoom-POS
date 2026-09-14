@@ -6,7 +6,7 @@ import './payment.css';
 
 const API_BASE = import.meta.env.DEV 
   ? 'http://localhost:3001/api' 
-  : 'https://tech-loom-ecommerce.vercel.app/api';
+  : 'https://task2-zeta-dusky.vercel.app/api';
 
 const Toast = ({ message, type }) => (
   <div className={`toast ${type}`}>
