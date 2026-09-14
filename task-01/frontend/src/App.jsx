@@ -300,35 +300,86 @@ function PaymentPage({ cart, clearCart, fetchProducts, showNotification }) {
         </div>
       </div>
 
-      <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <button 
-          className="btn btn-primary" 
-          onClick={() => processPayment('success', '1234123412341234')} 
-          disabled={loading}
-          style={{ background: '#10b981', borderColor: '#10b981' }}
-        >
-          {loading ? <div className="loader"></div> : '✅ Confirm Payment (Success)'}
+      <div className="payment-card-visual">
+        <div className="chip"></div>
+        <div className="card-number-display">
+          {cardNumber || '•••• •••• •••• ••••'}
+        </div>
+        <div className="card-details-display">
+          <div>
+            <div>Card Holder</div>
+            <div style={{ color: 'white', marginTop: '4px' }}>{name || 'YOUR NAME'}</div>
+          </div>
+          <div>
+            <div>Expires</div>
+            <div style={{ color: 'white', marginTop: '4px' }}>{expiry || 'MM/YY'}</div>
+          </div>
+        </div>
+      </div>
+
+      <form className="payment-form" onSubmit={handlePay}>
+        <div className="form-group">
+          <label>Card Number (16 Digits)</label>
+          <input 
+            type="text" 
+            className="form-input" 
+            placeholder="0000 0000 0000 0000"
+            value={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+            required
+            disabled={loading}
+          />
+          <small style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>
+            * Note: Entering exactly 16 digits will trigger Payment Success. Any other amount will trigger Payment Failure.
+          </small>
+        </div>
+        
+        <div className="form-group">
+          <label>Cardholder Name</label>
+          <input 
+            type="text" 
+            className="form-input" 
+            placeholder="John Doe"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            disabled={loading}
+          />
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label>Expiry Date</label>
+            <input 
+              type="text" 
+              className="form-input" 
+              placeholder="MM/YY"
+              value={expiry}
+              onChange={(e) => setExpiry(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+          <div className="form-group">
+            <label>CVV</label>
+            <input 
+              type="password" 
+              className="form-input" 
+              placeholder="123"
+              value={cvv}
+              onChange={(e) => setCvv(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+        </div>
+
+        <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }} disabled={loading}>
+          {loading ? <div className="loader"></div> : 'Pay Securely'}
         </button>
 
         <button 
-          className="btn btn-primary" 
-          onClick={() => processPayment('failure', '0000000000000000')} 
-          disabled={loading}
-          style={{ background: '#ef4444', borderColor: '#ef4444' }}
-        >
-          {loading ? <div className="loader"></div> : '❌ Decline Payment (Failure)'}
-        </button>
-
-        <button 
-          className="btn btn-primary" 
-          onClick={() => processPayment('timeout')} 
-          disabled={loading}
-          style={{ background: '#f59e0b', borderColor: '#f59e0b' }}
-        >
-          {loading ? <div className="loader"></div> : '⏳ Connection Timeout'}
-        </button>
-
-        <button 
+          type="button"
           className="btn" 
           onClick={async () => {
             setLoading(true);
@@ -342,11 +393,11 @@ function PaymentPage({ cart, clearCart, fetchProducts, showNotification }) {
             }
           }} 
           disabled={loading}
-          style={{ background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}
+          style={{ background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)', marginTop: '1rem', width: '100%' }}
         >
           Cancel Order & Release Stock
         </button>
-      </div>
+      </form>
     </div>
   );
 }
