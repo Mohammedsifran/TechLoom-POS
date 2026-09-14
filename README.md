@@ -3,6 +3,11 @@
 **Candidate:** Mohammed Sifran  
 **Repository:** [https://github.com/Mohammedsifran/TechLoom-POS](https://github.com/Mohammedsifran/TechLoom-POS)
 
+*Live website link * 
+Task 1: https://tech-loom-pos-l8xg.vercel.app/
+Task 2: https://task2front.vercel.app/
+
+
 ## Live Deployments
 * **Task 1 (POS Order & Inventory System)**
   * Frontend: [https://techloom-pos-two.vercel.app](https://techloom-pos-two.vercel.app)
